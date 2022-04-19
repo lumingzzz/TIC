@@ -1,0 +1,111 @@
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - "$CI_PROJECT_DIR/.cache/pip"
+
+stages:
+  - build
+  - static-analysis
+  - test
+  - doc
+
+wheel:
+  image: python:$PYTHON_VERSION-buster
+  stage: build
+  before_script:
+    - pip install build
+  script:
+    - python -m build --wheel .
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 day
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ['3.6', '3.7', '3.8', '3.9']
+  tags:
+    - docker
+
+sdist:
+  image: python:3.6-buster
+  stage: build
+  before_script:
+    - pip install build
+  script:
+    - python -m build --sdist .
+  tags:
+    - docker
+
+flake8:
+  stage: static-analysis
+  image: pytorch/pytorch:1.8.1-cuda11.1-cudnn8-devel
+  before_script:
+    - python --version
+    - pip install flake8 flake8-bugbear flake8-comprehensions
+  script:
+    - flake8 compressai tests examples docs
+  tags:
+    - docker
+
+black:
+  stage: static-analysis
+  image: python:3.6-buster
+  before_script:
+    - python --version
+    - pip install black
+  script:
+    - make check-black
+  tags:
+    - docker
+
+isort:
+  stage: static-analysis
+  image: python:3.6-buster
+  before_script:
+    - python --version
+    - pip install .
+    - pip install isort
+  script:
+    - make check-isort
+  tags:
+    - docker
+
+test:
+  cache: []
+  stage: test
+  image: pytorch/pytorch:$PYTORCH_IMAGE
+  before_script:
+    - python --version
+    - pip install -e .
+    - pip install -r requirements.txt
+    - pip install click pytest pytest-cov plotly
+  script:
+    - >
+      if [ "$CI_COMMIT_BRANCH" == "master" ]; then
+        pytest --cov=compressai -s tests
+      else
+        pytest --cov=compressai -m "not pretrained" -s tests
+      fi
+  parallel:
+    matrix:
+      - PYTORCH_IMAGE:
+          - "1.9.0-cuda11.1-cudnn8-devel"
+          - "1.8.1-cuda11.1-cudnn8-devel"
+          - "1.7.1-cuda11.0-cudnn8-devel"
+  tags:
+    - docker
+
+doc:
+  stage: doc
+  image: pytorch/pytorch:1.8.1-cuda11.1-cudnn8-devel
+  before_script:
+    - python --version
+    - pip install -e .
+    - cd docs
+    - pip install -r requirements.txt
+  script:
+    - make html
+  tags:
+    - docker
