@@ -218,8 +218,8 @@ class TIC(JointAutoregressiveHierarchicalPriors):
         self.g_s6 = deconv(N, 3, kernel_size=5, stride=2)
 
         self.entropy_bottleneck = EntropyBottleneck(N)
-        # self.context_prediction = CausalAttentionModule(M, M*2) 
-        self.context_prediction = MaskedConv2d(M, M*2, kernel_size=5, padding=2, stride=1)    
+        self.context_prediction = CausalAttentionModule(M, M*2) 
+        # self.context_prediction = MaskedConv2d(M, M*2, kernel_size=5, padding=2, stride=1)    
 
         self.entropy_parameters = nn.Sequential(
             nn.Conv2d(M*12//3, M*10//3, 1),

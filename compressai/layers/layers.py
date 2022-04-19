@@ -789,7 +789,7 @@ class CausalAttentionModule(nn.Module):
         attn = attn + relative_position_bias.unsqueeze(0)
 
         # causal self-attention
-        attn = attn.masked_fill(self.mask[:,:,:self.block_size,:self.block_size] == 0, float('-inf'))
+        attn = attn.masked_fill(self.mask[:,:,:self.block_size,:self.block_size] == 0, 1e-9)
         attn = self.softmax(attn)
         attn = self.attn_drop(attn)
         out = (attn @ v).transpose(1, 2).reshape(B*H*W, self.block_size, C) # [BHW, num_heads, PP, PP] [BHW, num_heads, PP, C//num_heads]  
