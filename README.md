@@ -1,2 +1,2 @@
-# TIC-DCC22
+# TIC-DCC
 Codes will be released recently.
