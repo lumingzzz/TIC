@@ -13,8 +13,7 @@ pip install timm
 
 ## Citation
 
-If you use this project, please cite the relevant original publications for the
-models and datasets, and cite this project as:
+If you find this work useful for your research, please cite:
 
 ```
 @article{lu2021transformer,
