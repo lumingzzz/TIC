@@ -2,12 +2,14 @@
 Pytorch Implementation for "Transformer-based Image Compression", DCC 2022
 
 ## Installation
+```bash
 git clone https://github.com/xyq7/InvCompress.git
 cd InvCompress/codes/
 conda create -n invcomp python=3.7 
 conda activate invcomp
 pip install -U pip && pip install -e .
 conda install -c conda-forge tensorboard
+```
 
 ## Acknowledgement
 
