@@ -1,5 +1,5 @@
 # Transformer-based Image Compression
-Pytorch Implementation for "Transformer-based Image Compression", DCC 2022
+Pytorch Implementation for "Transformer-based Image Compression"[[arXiv]](https://arxiv.org/abs/2111.06707), DCC 2022
 
 ## Installation
 To get started locally and install the development version of our work, run the following commands (The [docker environment](https://registry.hub.docker.com/layers/pytorch/pytorch/1.8.1-cuda11.1-cudnn8-devel/images/sha256-024af183411f136373a83f9a0e5d1a02fb11acb1b52fdcf4d73601912d0f09b1?context=explore) is recommended):
