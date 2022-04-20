@@ -107,4 +107,3 @@ If you have any question, please contact me via luming@smail.nju.edu.cn.
  * BPG image format by _Fabrice Bellard_: https://bellard.org/bpg
  * HEVC HM reference software: https://hevc.hhi.fraunhofer.de
  * VVC VTM reference software: https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM
- * AOM AV1 reference software: https://aomedia.googlesource.com/aom
