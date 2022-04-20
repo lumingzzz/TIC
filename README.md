@@ -11,6 +11,20 @@ pip install timm
 
 ## Acknowledgement
 
+## Citation
+
+If you use this project, please cite the relevant original publications for the
+models and datasets, and cite this project as:
+
+```
+@article{lu2021transformer,
+	 title={Transformer-based Image Compression},
+	 author={Lu, Ming and Guo, Peiyao and Shi, Huiqing and Cao, Chuntong and Ma, Zhan},
+	 journal={arXiv preprint arXiv:2111.06707},
+	 year={2021}
+}
+```
+
 
 
 # CompressAI
