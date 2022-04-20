@@ -1,5 +1,5 @@
-## Transformer-based Image Compression
-To be updated
+# Transformer-based Image Compression
+Pytorch Implementation for "Transformer-based Image Compression", DCC 2022
 
 <!-- ![ID-CompressAI-logo](assets/ID-compressAI-logo-750x140.png)
 
