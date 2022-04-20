@@ -27,68 +27,6 @@ If you find this work useful for your research, please cite:
 
 
 
-# CompressAI
-
-[![License](https://img.shields.io/github/license/InterDigitalInc/CompressAI?color=blue)](https://github.com/InterDigitalInc/CompressAI/blob/master/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/compressai?color=brightgreen)](https://pypi.org/project/compressai/)
-[![Downloads](https://pepy.tech/badge/compressai)](https://pypi.org/project/compressai/#files)
-
-CompressAI (_compress-ay_) is a PyTorch library and evaluation platform for
-end-to-end compression research.
-
-CompressAI currently provides:
-
-* custom operations, layers and models for deep learning based data compression
-* a partial port of the official [TensorFlow compression](https://github.com/tensorflow/compression) library
-* pre-trained end-to-end compression models for learned image compression
-* evaluation scripts to compare learned models against classical image/video
-  compression codecs
-
-![PSNR performances plot on Kodak](assets/kodak-psnr.png)
-
-
-> **Note**: Multi-GPU support is now experimental.
-
-## Installation
-
-CompressAI supports python 3.6+ and PyTorch 1.7+.
-
-**pip**:
-
-```bash
-pip install compressai
-```
-
-> **Note**: wheels are available for Linux and MacOS.
-
-**From source**:
-
-A C++17 compiler, a recent version of pip (19.0+), and common python packages
-are also required (see `setup.py` for the full list).
-
-To get started locally and install the development version of CompressAI, run
-the following commands in a [virtual environment](https://docs.python.org/3.6/library/venv.html):
-
-```bash
-git clone https://github.com/InterDigitalInc/CompressAI compressai
-cd compressai
-pip install -U pip && pip install -e .
-```
-
-For a custom installation, you can also run one of the following commands:
-* `pip install -e '.[dev]'`: install the packages required for development (testing, linting, docs)
-* `pip install -e '.[tutorials]'`: install the packages required for the tutorials (notebooks)
-* `pip install -e '.[all]'`: install all the optional packages
-
-> **Note**: Docker images will be released in the future. Conda environments are not
-officially supported.
-
-## Documentation
-
-* [Installation](https://interdigitalinc.github.io/CompressAI/installation.html)
-* [CompressAI API](https://interdigitalinc.github.io/CompressAI/)
-* [Training your own model](https://interdigitalinc.github.io/CompressAI/tutorials/tutorial_train.html)
-* [List of available models (model zoo)](https://interdigitalinc.github.io/CompressAI/zoo.html)
 
 ## Usage
 
