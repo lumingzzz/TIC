@@ -32,13 +32,6 @@ simple training pipeline:
 python3 examples/train.py -d /path/to/my/image/dataset/ --epochs 300 -lr 1e-4 --batch-size 16 --cuda --save
 ```
 > **Note:** the training example uses a custom [ImageFolder](https://interdigitalinc.github.io/CompressAI/datasets.html#imagefolder) structure.
-
-A jupyter notebook illustrating the usage of a pre-trained model for learned image
-compression is also provided in the `examples` directory:
-
-```bash
-pip install -U ipython jupyter ipywidgets matplotlib
-jupyter notebook examples/
 ```
 
 ### Evaluation
