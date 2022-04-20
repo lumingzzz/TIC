@@ -109,35 +109,6 @@ pytest -sx --cov=compressai --cov-append --cov-report term-missing tests
 Slow tests can be skipped with the `-m "not slow"` option.
 
 
-## License
-
-CompressAI is licensed under the BSD 3-Clause Clear License
-
-## Contributing
-
-We welcome feedback and contributions. Please open a GitHub issue to report
-bugs, request enhancements or if you have any questions.
-
-Before contributing, please read the CONTRIBUTING.md file.
-
-## Authors
-
-* Jean Bégaint, Fabien Racapé, Simon Feltman and Hyomin Choi, InterDigital AI Lab.
-
-## Citation
-
-If you use this project, please cite the relevant original publications for the
-models and datasets, and cite this project as:
-
-```
-@article{begaint2020compressai,
-	title={CompressAI: a PyTorch library and evaluation platform for end-to-end compression research},
-	author={B{\'e}gaint, Jean and Racap{\'e}, Fabien and Feltman, Simon and Pushparaja, Akshay},
-	year={2020},
-	journal={arXiv preprint arXiv:2011.03029},
-}
-```
-
 ## Related links
  * Tensorflow compression library by _Ballé et al._: https://github.com/tensorflow/compression
  * Range Asymmetric Numeral System code from _Fabian 'ryg' Giesen_: https://github.com/rygorous/ryg_rans
