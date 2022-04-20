@@ -12,7 +12,9 @@ pip install timm
 
 ## Usage
 
-### Examples
+TODO
+
+<!-- ### Examples
 
 Script and notebook examples can be found in the `examples/` directory.
 
@@ -81,7 +83,7 @@ Run tests with `pytest`:
 pytest -sx --cov=compressai --cov-append --cov-report term-missing tests
 ```
 
-Slow tests can be skipped with the `-m "not slow"` option.
+Slow tests can be skipped with the `-m "not slow"` option. -->
 
 ## Acknowledgement
 The framework is based on [CompressAI](https://github.com/InterDigitalInc/CompressAI/), we thank the authors for their great work.
