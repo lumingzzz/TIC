@@ -1,6 +1,9 @@
 # Transformer-based Image Compression
 Pytorch Implementation for "Transformer-based Image Compression"[[arXiv]](https://arxiv.org/abs/2111.06707), DCC 2022
 
+## Acknowledgement
+The framework is based on [CompressAI](https://github.com/InterDigitalInc/CompressAI/), we add our networks in compressai.models.tic and compressai.layers for usage.
+
 ## Installation
 To get started locally and install the development version of our work, run the following commands (The [docker environment](https://registry.hub.docker.com/layers/pytorch/pytorch/1.8.1-cuda11.1-cudnn8-devel/images/sha256-024af183411f136373a83f9a0e5d1a02fb11acb1b52fdcf4d73601912d0f09b1?context=explore) is recommended):
 ```bash
@@ -84,9 +87,6 @@ pytest -sx --cov=compressai --cov-append --cov-report term-missing tests
 ```
 
 Slow tests can be skipped with the `-m "not slow"` option. -->
-
-## Acknowledgement
-The framework is based on [CompressAI](https://github.com/InterDigitalInc/CompressAI/), we add our networks in compressai.models.tic and compressai.layers for usage.
 
 ## Citation
 If you find this work useful for your research, please cite:
