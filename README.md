@@ -91,9 +91,9 @@ pytest -sx --cov=compressai --cov-append --cov-report term-missing tests
 Slow tests can be skipped with the `-m "not slow"` option.
 
 ## Acknowledgement
+The framework is based on [CompressAI](https://github.com/InterDigitalInc/CompressAI/), we thank the authors for their great work.
 
 ## Citation
-
 If you find this work useful for your research, please cite:
 
 ```
