@@ -106,12 +106,8 @@ If you find this work useful for your research, please cite:
 ```
 
 ## Related links
- * Tensorflow compression library by _Ballé et al._: https://github.com/tensorflow/compression
- * Range Asymmetric Numeral System code from _Fabian 'ryg' Giesen_: https://github.com/rygorous/ryg_rans
+ * Kodak image dataset: http://r0k.us/graphics/kodak/
  * BPG image format by _Fabrice Bellard_: https://bellard.org/bpg
  * HEVC HM reference software: https://hevc.hhi.fraunhofer.de
  * VVC VTM reference software: https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM
  * AOM AV1 reference software: https://aomedia.googlesource.com/aom
- * Z. Cheng et al. 2020: https://github.com/ZhengxueCheng/Learned-Image-Compression-with-GMM-and-Attention
- * Kodak image dataset: http://r0k.us/graphics/kodak/
-
