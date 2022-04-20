@@ -1,7 +1,18 @@
 # Transformer-based Image Compression
 Pytorch Implementation for "Transformer-based Image Compression", DCC 2022
 
-<!-- ![ID-CompressAI-logo](assets/ID-compressAI-logo-750x140.png)
+## Installation
+git clone https://github.com/xyq7/InvCompress.git
+cd InvCompress/codes/
+conda create -n invcomp python=3.7 
+conda activate invcomp
+pip install -U pip && pip install -e .
+conda install -c conda-forge tensorboard
+
+## Acknowledgement
+
+
+![ID-CompressAI-logo](assets/ID-compressAI-logo-750x140.png)
 
 # CompressAI
 
@@ -185,4 +196,4 @@ models and datasets, and cite this project as:
  * AOM AV1 reference software: https://aomedia.googlesource.com/aom
  * Z. Cheng et al. 2020: https://github.com/ZhengxueCheng/Learned-Image-Compression-with-GMM-and-Attention
  * Kodak image dataset: http://r0k.us/graphics/kodak/
- -->
+
