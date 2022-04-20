@@ -10,24 +10,6 @@ pip install -U pip && pip install -e .
 pip install timm
 ```
 
-## Acknowledgement
-
-## Citation
-
-If you find this work useful for your research, please cite:
-
-```
-@article{lu2021transformer,
-	title={Transformer-based Image Compression},
-	author={Lu, Ming and Guo, Peiyao and Shi, Huiqing and Cao, Chuntong and Ma, Zhan},
-	journal={arXiv preprint arXiv:2111.06707},
-	year={2021}
-}
-```
-
-
-
-
 ## Usage
 
 ### Examples
@@ -108,6 +90,20 @@ pytest -sx --cov=compressai --cov-append --cov-report term-missing tests
 
 Slow tests can be skipped with the `-m "not slow"` option.
 
+## Acknowledgement
+
+## Citation
+
+If you find this work useful for your research, please cite:
+
+```
+@article{lu2021transformer,
+	title={Transformer-based Image Compression},
+	author={Lu, Ming and Guo, Peiyao and Shi, Huiqing and Cao, Chuntong and Ma, Zhan},
+	journal={arXiv preprint arXiv:2111.06707},
+	year={2021}
+}
+```
 
 ## Related links
  * Tensorflow compression library by _Ballé et al._: https://github.com/tensorflow/compression
