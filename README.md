@@ -1,4 +1,7 @@
-![ID-CompressAI-logo](assets/ID-compressAI-logo-750x140.png)
+## Transformer-based Image Compression
+To be updated
+
+<!-- ![ID-CompressAI-logo](assets/ID-compressAI-logo-750x140.png)
 
 # CompressAI
 
@@ -182,4 +185,4 @@ models and datasets, and cite this project as:
  * AOM AV1 reference software: https://aomedia.googlesource.com/aom
  * Z. Cheng et al. 2020: https://github.com/ZhengxueCheng/Learned-Image-Compression-with-GMM-and-Attention
  * Kodak image dataset: http://r0k.us/graphics/kodak/
-
+ -->
