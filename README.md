@@ -26,6 +26,11 @@ run the script for a simple training pipeline:
 python3 examples/train.py -m tic -d /path/to/my/image/dataset/ --epochs 300 -lr 1e-4 --batch-size 8 --cuda --save
 ```
 
+## Notes
+Some implementations are slightly different from the paper:
+1. We remove the activation functions after the convolutions (e.g. the GDN and LReLU), which have no influence to the performance. 
+2. The implementation of the Causal Attention Module (CAM) is slightly different from the paper by directly masking the input of context model which is easier for reproduction. 
+
 ## Citation
 If you find this work useful for your research, please cite:
 
