@@ -19,7 +19,7 @@ pip install timm
 The pre-trained model will be released soon.
 
 ### Train
-We use the [Flicker2W](https://github.com/liujiaheng/CompressionData) dataset for training, the preprocess script is in [link](https://github.com/xyq7/InvCompress/tree/main/codes/scripts).
+We use the [Flicker2W](https://github.com/liujiaheng/CompressionData) dataset for training, and the [script](https://github.com/xyq7/InvCompress/tree/main/codes/scripts) for preprocessing.
 
 run the script for a simple training pipeline:
 ```bash
