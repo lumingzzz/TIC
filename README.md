@@ -18,6 +18,11 @@ pip install timm
 ### Evaluation
 The pre-trained model will be released soon.
 
+An example to evaluate model:
+```bash
+python -m compressai.utils.eval_model checkpoint path/to/eval/data/ -a tic -p path/to/pretrained/model --cuda
+```
+
 ### Train
 We use the [Flicker2W](https://github.com/liujiaheng/CompressionData) dataset for training, and the [script](https://github.com/xyq7/InvCompress/tree/main/codes/scripts) for preprocessing.
 
