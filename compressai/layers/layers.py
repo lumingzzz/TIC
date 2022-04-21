@@ -51,6 +51,7 @@ __all__ = [
     "QReLU",
     "RSTB",
     "CausalAttentionModule",
+    "CausalAttentionModule_v2",
 ]
 
 
@@ -793,7 +794,6 @@ class CausalAttentionModule(nn.Module):
         attn = self.softmax(attn)
         attn = self.attn_drop(attn)
         out = (attn @ v).transpose(1, 2).reshape(B*H*W, self.block_size, C) # [BHW, num_heads, PP, PP] [BHW, num_heads, PP, C//num_heads]  
-        out += x_unfold
         out_sumed = torch.sum(out, dim=1).reshape(B, H*W, C)
         out = self.norm2(out_sumed)
         out = self.mlp(out)
@@ -806,7 +806,7 @@ class CausalAttentionModule(nn.Module):
 
 
 class CausalAttentionModule_v2(nn.Module):
-    r""" Causal multi-head self attention module.
+    r""" Causal multi-head self attention module v2.
 
     Args:
         dim (int): Number of input channels.

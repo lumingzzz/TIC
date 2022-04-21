@@ -48,6 +48,7 @@ from compressai.models.google import (
     MeanScaleHyperprior,
     ScaleHyperprior,
 )
+from compressai.models.tic import TIC
 from compressai.models.video.google import ScaleSpaceFlow
 from compressai.zoo import load_state_dict
 from compressai.zoo.image import model_architectures as zoo_models
@@ -92,6 +93,7 @@ models = {
     "mean-scale-hyperprior": MeanScaleHyperprior,
     "scale-hyperprior": ScaleHyperprior,
     "ssf2020": ScaleSpaceFlow,
+    "tic":TIC,
 }
 models.update(zoo_models)
 

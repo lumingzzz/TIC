@@ -161,7 +161,7 @@ def load_pretrained(model: str, metric: str, quality: int) -> nn.Module:
 
 
 def load_checkpoint(arch: str, checkpoint_path: str) -> nn.Module:
-    state_dict = load_state_dict(torch.load(checkpoint_path))
+    state_dict = load_state_dict(torch.load(checkpoint_path)['state_dict'])
     return architectures[arch].from_state_dict(state_dict).eval()
 
 
@@ -301,6 +301,10 @@ def main(argv):
         model = load_func(*opts, run)
         if args.cuda and torch.cuda.is_available():
             model = model.to("cuda")
+
+        if args.source == "checkpoint":
+            model.update(force=True)
+
         metrics = eval_model(model, filepaths, args.entropy_estimation, args.half)
         for k, v in metrics.items():
             results[k].append(v)

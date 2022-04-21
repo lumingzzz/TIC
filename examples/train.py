@@ -279,7 +279,7 @@ def parse_args(argv):
     parser.add_argument(
         "--test-batch-size",
         type=int,
-        default=64,
+        default=1,
         help="Test batch size (default: %(default)s)",
     )
     parser.add_argument(
@@ -319,12 +319,12 @@ def parse_args(argv):
         type=str,
         help='Result dir name', 
     )
-    parser.add_argument(
-        "--snapshot-save-epoch",
-        type=int,
-        default=10,
-        help="Snapshot save frequency (default: %(default)s)",
-    )
+    # parser.add_argument(
+    #     "--snapshot-save-epoch",
+    #     type=int,
+    #     default=10,
+    #     help="Snapshot save frequency (default: %(default)s)",
+    # )
     parser.add_argument("--checkpoint", type=str, help="Path to a checkpoint")
     args = parser.parse_args(argv)
     return args
@@ -415,19 +415,18 @@ def main(argv):
         best_loss = min(loss, best_loss)
 
         if args.save:
-            if epoch % args.snapshot_save_epoch == 0:
-                save_checkpoint(
-                    {
-                        "epoch": epoch,
-                        "state_dict": net.state_dict(),
-                        "loss": loss,
-                        "optimizer": optimizer.state_dict(),
-                        "aux_optimizer": aux_optimizer.state_dict(),
-                        "lr_scheduler": lr_scheduler.state_dict(),
-                    },
-                    is_best,
-                    base_dir
-                )
+            save_checkpoint(
+                {
+                    "epoch": epoch,
+                    "state_dict": net.state_dict(),
+                    "loss": loss,
+                    "optimizer": optimizer.state_dict(),
+                    "aux_optimizer": aux_optimizer.state_dict(),
+                    "lr_scheduler": lr_scheduler.state_dict(),
+                },
+                is_best,
+                base_dir
+            )
 
 
 if __name__ == "__main__":
