@@ -51,7 +51,6 @@ __all__ = [
     "QReLU",
     "RSTB",
     "CausalAttentionModule",
-    "CausalAttentionModule_v2",
 ]
 
 
@@ -746,88 +745,6 @@ class CausalAttentionModule(nn.Module):
 
         self.norm1 = nn.LayerNorm(dim)
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
-
-        # define a parameter table of relative position bias
-        self.relative_position_bias_table = nn.Parameter(
-            torch.zeros((2 * block_len - 1) * (2 * block_len - 1), num_heads))  # 2*P-1 * 2*P-1, num_heads
-
-        # get pair-wise relative position index for each token inside the window
-        coords_h = torch.arange(block_len)
-        coords_w = torch.arange(block_len)
-        coords = torch.stack(torch.meshgrid([coords_h, coords_w]))  # 2, P, P
-        coords_flatten = torch.flatten(coords, 1)  # 2, P*P
-        relative_coords = coords_flatten[:, :, None] - coords_flatten[:, None, :]  # 2, PP, PP
-        relative_coords = relative_coords.permute(1, 2, 0).contiguous()  # PP, PP, 2
-        relative_coords[:, :, 0] += block_len - 1  # shift to start from 0
-        relative_coords[:, :, 1] += block_len - 1
-        relative_coords[:, :, 0] *= 2 * block_len - 1
-        relative_position_index = relative_coords.sum(-1)  # PP, PP
-        self.register_buffer("relative_position_index", relative_position_index)  
-
-        self.softmax = nn.Softmax(dim=-1)
-        # causal mask to ensure that attention is only applied to the left in the input sequence
-        self.register_buffer("mask", torch.tril(torch.ones(self.block_size, self.block_size), diagonal=-1)
-                                .view(1, 1, self.block_size, self.block_size))
-        self.norm2 = nn.LayerNorm(dim)
-        mlp_hidden_dim = int(dim * mlp_ratio)
-        self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=nn.GELU, drop=attn_drop)
-        self.proj = nn.Linear(dim, out_dim)
-
-    def forward(self, x):
-        B, C, H, W = x.shape
-        x_unfold = F.unfold(x, kernel_size=(5, 5), padding=2) # B, CPP, HW
-        x_unfold = x_unfold.reshape(B, C, self.block_size, H*W).permute(0, 3, 2, 1).contiguous().view(-1, self.block_size, C) # BHW, PP, C
-
-        x_norm = self.norm1(x_unfold)
-        qkv = self.qkv(x_norm).reshape(B*H*W, self.block_size, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4) # 3, BHW, num_heads, PP, C
-        q, k, v = qkv[0], qkv[1], qkv[2]  # make torchscript happy (cannot use tensor as tuple) # BHW, num_heads, PP, C//num_heads
-        q = q * self.scale
-        attn = (q @ k.transpose(-2, -1)) # BHW, num_heads, PP, PP
-
-        relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
-            self.block_size, self.block_size, -1)  # PP, PP, num_heads
-        relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # num_heads, PP, PP
-        attn = attn + relative_position_bias.unsqueeze(0)
-
-        # causal self-attention
-        attn = attn.masked_fill(self.mask[:,:,:self.block_size,:self.block_size] == 0, 1e-9)
-        attn = self.softmax(attn)
-        attn = self.attn_drop(attn)
-        out = (attn @ v).transpose(1, 2).reshape(B*H*W, self.block_size, C) # [BHW, num_heads, PP, PP] [BHW, num_heads, PP, C//num_heads]  
-        out_sumed = torch.sum(out, dim=1).reshape(B, H*W, C)
-        out = self.norm2(out_sumed)
-        out = self.mlp(out)
-        out += out_sumed
-        
-        out = self.proj(out)
-        out = out.reshape(B, H, W, -1).permute(0, 3, 1, 2) # B, C_out, H, W
-
-        return out
-
-
-class CausalAttentionModule_v2(nn.Module):
-    r""" Causal multi-head self attention module v2.
-
-    Args:
-        dim (int): Number of input channels.
-        window_size (tuple[int]): The height and width of the window.
-        num_heads (int): Number of attention heads.
-        qkv_bias (bool, optional):  If True, add a learnable bias to query, key, value. Default: True
-        qk_scale (float | None, optional): Override default qk scale of head_dim ** -0.5 if set
-        attn_drop (float, optional): Dropout ratio of attention weight. Default: 0.0
-    """
-    def __init__(self, dim, out_dim, block_len=5, num_heads=16, mlp_ratio=4., qkv_bias=True, qk_scale=None, attn_drop=0.):
-        super().__init__()
-        assert dim % num_heads == 0
-        self.dim = dim
-        self.num_heads = num_heads
-        head_dim = dim // num_heads
-        self.block_size = block_len*block_len
-        self.scale = qk_scale or head_dim ** -0.5
-        self.attn_drop = nn.Dropout(attn_drop)
-
-        self.norm1 = nn.LayerNorm(dim)
-        self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
         self.mask = torch.Tensor([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).view(1, self.block_size, 1)    
 
         # define a parameter table of relative position bias
@@ -848,9 +765,7 @@ class CausalAttentionModule_v2(nn.Module):
         self.register_buffer("relative_position_index", relative_position_index)  
 
         self.softmax = nn.Softmax(dim=-1)
-        # causal mask to ensure that attention is only applied to the left in the input sequence
-        # self.register_buffer("mask", torch.tril(torch.ones(self.block_size, self.block_size), diagonal=-1)
-        #                         .view(1, 1, self.block_size, self.block_size))
+
         self.norm2 = nn.LayerNorm(dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=nn.GELU, drop=attn_drop)
@@ -873,8 +788,6 @@ class CausalAttentionModule_v2(nn.Module):
         relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # num_heads, PP, PP
         attn = attn + relative_position_bias.unsqueeze(0)
 
-        # causal self-attention
-        # attn = attn.masked_fill(self.mask[:,:,:self.block_size,:self.block_size] == 0, -1e9)
         attn = self.softmax(attn)
         attn = self.attn_drop(attn)
         out = (attn @ v).transpose(1, 2).reshape(B*H*W, self.block_size, C) # [BHW, num_heads, PP, PP] [BHW, num_heads, PP, C//num_heads]  
