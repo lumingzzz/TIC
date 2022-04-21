@@ -34,7 +34,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from compressai.entropy_models import EntropyBottleneck
-from compressai.layers import RSTB, CausalAttentionModule, CausalAttentionModule_v2
+from compressai.layers import RSTB, CausalAttentionModule
 from compressai.ans import BufferedRansEncoder, RansDecoder
 from timm.models.layers import trunc_normal_
 
