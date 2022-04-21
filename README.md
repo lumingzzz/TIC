@@ -14,80 +14,17 @@ pip install timm
 ```
 
 ## Usage
+
 ### Evaluation
 The pre-trained model will be released soon.
+
 ### Train
-We use the [Flicker dataset](https://github.com/liujiaheng/CompressionData), 
-<!-- ### Examples
+We use the [Flicker2W](https://github.com/liujiaheng/CompressionData) dataset for training, the preprocess script is in [link](https://github.com/xyq7/InvCompress/tree/main/codes/scripts).
 
-Script and notebook examples can be found in the `examples/` directory.
-
-To encode/decode images with the provided pre-trained models, run the
-`codec.py` example:
-
+run the script for a simple training pipeline:
 ```bash
-python3 examples/codec.py --help
+python3 examples/train.py -m tic -d /path/to/my/image/dataset/ --epochs 300 -lr 1e-4 --batch-size 8 --cuda --save
 ```
-
-An examplary training script with a rate-distortion loss is provided in
-`examples/train.py`. You can replace the model used in the training script
-with your own model implemented within CompressAI, and then run the script for a
-simple training pipeline:
-
-```bash
-python3 examples/train.py -d /path/to/my/image/dataset/ --epochs 300 -lr 1e-4 --batch-size 16 --cuda --save
-```
-> **Note:** the training example uses a custom [ImageFolder](https://interdigitalinc.github.io/CompressAI/datasets.html#imagefolder) structure.
-```
-
-### Evaluation
-
-To evaluate a trained model on your own dataset, CompressAI provides an
-evaluation script:
-
-```bash
-python3 -m compressai.utils.eval_model checkpoint /path/to/images/folder/ -a $ARCH -p $MODEL_CHECKPOINT...
-```
-
-To evaluate provided pre-trained models:
-
-```bash
-python3 -m compressai.utils.eval_model pretrained /path/to/images/folder/ -a $ARCH -q $QUALITY_LEVELS...
-```
-
-To plot results from bench/eval_model simulations (requires matplotlib by default): 
-
-```bash
-python3 -m compressai.utils.plot --help
-```
-
-To evaluate traditional codecs:
-
-```bash
-python3 -m compressai.utils.bench --help
-python3 -m compressai.utils.bench bpg --help
-python3 -m compressai.utils.bench vtm --help
-```
-
-For video, similar tests can be run, CompressAI only includes ssf2020 for now:
-
-```bash
-python3 -m compressai.utils.video.eval_model checkpoint /path/to/video/folder/ -a ssf2020 -p $MODEL_CHECKPOINT...
-python3 -m compressai.utils.video.eval_model pretrained /path/to/video/folder/ -a ssf2020 -q $QUALITY_LEVELS...
-python3 -m compressai.utils.video.bench x265 --help
-python3 -m compressai.utils.video.bench VTM --help
-python3 -m compressai.utils.video.plot --help
-```
-
-## Tests
-
-Run tests with `pytest`:
-
-```bash
-pytest -sx --cov=compressai --cov-append --cov-report term-missing tests
-```
-
-Slow tests can be skipped with the `-m "not slow"` option. -->
 
 ## Citation
 If you find this work useful for your research, please cite:
