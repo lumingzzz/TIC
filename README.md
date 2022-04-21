@@ -14,9 +14,10 @@ pip install timm
 ```
 
 ## Usage
-
-TODO
-
+### Evaluation
+The pre-trained model will be released soon.
+### Train
+We use the [Flicker dataset](We use the training dataset processed)
 <!-- ### Examples
 
 Script and notebook examples can be found in the `examples/` directory.
