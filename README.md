@@ -17,7 +17,7 @@ pip install timm
 ### Evaluation
 The pre-trained model will be released soon.
 ### Train
-We use the [Flicker dataset](We use the training dataset processed)
+We use the [Flicker dataset](https://github.com/liujiaheng/CompressionData), 
 <!-- ### Examples
 
 Script and notebook examples can be found in the `examples/` directory.
