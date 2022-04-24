@@ -178,7 +178,7 @@ def train_one_epoch(
         aux_loss.backward()
         aux_optimizer.step()
 
-        if i % 500 == 0:
+        if i*len(d) % 5000 == 0:
             logging.info(
                 f'[{i*len(d)}/{len(train_dataloader.dataset)}] | '
                 # f" ({100. * i / len(train_dataloader):.0f}%)]"
@@ -294,13 +294,13 @@ def parse_args(argv):
         default=(256, 256),
         help="Size of the patches to be cropped (default: %(default)s)",
     )
+    parser.add_argument("--cuda", action="store_true", help="Use cuda")
     parser.add_argument(
         "--gpu-id",
         type=str,
         default=0,
         help="GPU ids (default: %(default)s)",
     )
-    parser.add_argument("--cuda", action="store_true", help="Use cuda")
     parser.add_argument(
         "--save", action="store_true", default=True, help="Save model to disk"
     )
@@ -319,12 +319,6 @@ def parse_args(argv):
         type=str,
         help='Result dir name', 
     )
-    # parser.add_argument(
-    #     "--snapshot-save-epoch",
-    #     type=int,
-    #     default=10,
-    #     help="Snapshot save frequency (default: %(default)s)",
-    # )
     parser.add_argument("--checkpoint", type=str, help="Path to a checkpoint")
     args = parser.parse_args(argv)
     return args
@@ -382,7 +376,8 @@ def main(argv):
         net = CustomDataParallel(net)
 
     optimizer, aux_optimizer = configure_optimizers(net, args)
-    lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, "min")
+    # lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, "min")
+    lr_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[300,350], gamma=0.1)
     criterion = RateDistortionLoss(lmbda=args.lmbda)
 
     last_epoch = 0
