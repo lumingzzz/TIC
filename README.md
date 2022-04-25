@@ -25,7 +25,7 @@ python3 examples/train.py -m tic -d /path/to/my/image/dataset/ --epochs 300 -lr 
 
 
 ### Evaluation
-The pre-trained model will be released soon.
+The pre-trained model can be downloaded in [NJU Box](https://box.nju.edu.cn/f/63e702b5997c4572a2e6/?dl=1).
 
 An example to evaluate model:
 ```bash
