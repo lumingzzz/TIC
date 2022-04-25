@@ -20,7 +20,7 @@ We use the [Flicker2W](https://github.com/liujiaheng/CompressionData) dataset fo
 
 run the script for a simple training pipeline:
 ```bash
-python3 examples/train.py -m tic -d /path/to/my/image/dataset/ --epochs 300 -lr 1e-4 --batch-size 8 --cuda --save
+python examples/train.py -m tic -d /path/to/my/image/dataset/ --epochs 300 -lr 1e-4 --batch-size 8 --cuda --save
 ```
 
 
