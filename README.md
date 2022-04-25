@@ -18,7 +18,7 @@ pip install timm
 ### Train
 We use the [Flicker2W](https://github.com/liujiaheng/CompressionData) dataset for training, and the [script](https://github.com/xyq7/InvCompress/tree/main/codes/scripts) for preprocessing.
 
-run the script for a simple training pipeline:
+Run the script for a simple training pipeline:
 ```bash
 python examples/train.py -m tic -d /path/to/my/image/dataset/ --epochs 300 -lr 1e-4 --batch-size 8 --cuda --save
 ```
