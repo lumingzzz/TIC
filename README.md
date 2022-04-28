@@ -25,9 +25,7 @@ python examples/train.py -m tic -d /path/to/my/image/dataset/ --epochs 300 -lr 1
 
 
 ### Evaluation
-<!-- The pre-trained model of Quality 3 (lambda = 0.0067) can be downloaded in [NJU Box](). Since the codes are reorgnized using the newest version of [CompressAI](https://github.com/InterDigitalInc/CompressAI/), the performance may be a little different from that in the paper. -->
-
-An example model is under retraining. 
+A pre-trained model of Quality 3 (lambda = 0.0067) can be downloaded in [NJU Box](https://box.nju.edu.cn/f/63e702b5997c4572a2e6/?dl=1). Since the codes are reorgnized and retrained using the newest version (1.2.0) of [CompressAI](https://github.com/InterDigitalInc/CompressAI/), the performance (0.286/31.62) may be a little deviation from that in the paper (0.281/31.50).
 
 An example to evaluate model:
 ```bash
