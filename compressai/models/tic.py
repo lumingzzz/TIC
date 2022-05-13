@@ -1,34 +1,4 @@
-# Copyright (c) 2021-2022, InterDigital Communications, Inc
-# All rights reserved.
-
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted (subject to the limitations in the disclaimer
-# below) provided that the following conditions are met:
-
-# * Redistributions of source code must retain the above copyright notice,
-#   this list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright notice,
-#   this list of conditions and the following disclaimer in the documentation
-#   and/or other materials provided with the distribution.
-# * Neither the name of InterDigital Communications, Inc nor the names of its
-#   contributors may be used to endorse or promote products derived from this
-#   software without specific prior written permission.
-
-# NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
-# THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-# CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
-# NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 import math
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -37,9 +7,7 @@ from compressai.entropy_models import EntropyBottleneck
 from compressai.layers import RSTB, CausalAttentionModule
 from compressai.ans import BufferedRansEncoder, RansDecoder
 from timm.models.layers import trunc_normal_
-
 from .utils import conv, deconv
-from .google import JointAutoregressiveHierarchicalPriors
 
 # From Balle's tensorflow compression examples
 SCALES_MIN = 0.11
@@ -49,7 +17,7 @@ SCALES_LEVELS = 64
 def get_scale_table(min=SCALES_MIN, max=SCALES_MAX, levels=SCALES_LEVELS):
     return torch.exp(torch.linspace(math.log(min), math.log(max), levels))
 
-class TIC(JointAutoregressiveHierarchicalPriors):
+class TIC(nn.Module):
     """Neural image compression framework from 
     Lu Ming and Guo, Peiyao and Shi, Huiqing and Cao, Chuntong and Ma, Zhan: 
     `"Transformer-based Image Compression" <https://arxiv.org/abs/2111.06707>`, (DCC 2022).
@@ -276,6 +244,15 @@ class TIC(JointAutoregressiveHierarchicalPriors):
         x = self.h_s3(x, (x_size[0]//16, x_size[1]//16))
         x = self.h_s4(x)
         return x
+    
+    def aux_loss(self):
+        """Return the aggregated loss over the auxiliary entropy bottleneck
+        module(s).
+        """
+        aux_loss = sum(
+            m.loss() for m in self.modules() if isinstance(m, EntropyBottleneck)
+        )
+        return aux_loss
 
     def _init_weights(self, m):
         if isinstance(m, nn.Linear):
@@ -312,11 +289,55 @@ class TIC(JointAutoregressiveHierarchicalPriors):
             "x_hat": x_hat,
             "likelihoods": {"y": y_likelihoods, "z": z_likelihoods},
         }
+    
+    def update(self, scale_table=None, force=False):
+        """Updates the entropy bottleneck(s) CDF values.
+
+        Needs to be called once after training to be able to later perform the
+        evaluation with an actual entropy coder.
+
+        Args:
+            scale_table (bool): (default: None)  
+            force (bool): overwrite previous values (default: False)
+
+        Returns:
+            updated (bool): True if one of the EntropyBottlenecks was updated.
+
+        """
+        if scale_table is None:
+            scale_table = get_scale_table()
+        self.gaussian_conditional.update_scale_table(scale_table, force=force)
+
+        updated = False
+        for m in self.children():
+            if not isinstance(m, EntropyBottleneck):
+                continue
+            rv = m.update(force=force)
+            updated |= rv
+        return updated
+
+    def load_state_dict(self, state_dict, strict=True):
+        # Dynamically update the entropy bottleneck buffers related to the CDFs
+        update_registered_buffers(
+            self.entropy_bottleneck,
+            "entropy_bottleneck",
+            ["_quantized_cdf", "_offset", "_cdf_length"],
+            state_dict,
+        )
+        update_registered_buffers(
+            self.gaussian_conditional,
+            "gaussian_conditional",
+            ["_quantized_cdf", "_offset", "_cdf_length", "scale_table"],
+            state_dict,
+        )
+        super().load_state_dict(state_dict, strict=strict)
 
     @classmethod
     def from_state_dict(cls, state_dict):
         """Return a new model instance from `state_dict`."""
-        net = cls()
+        N = state_dict["g_a0.weight"].size(0)
+        M = state_dict["g_a6.weight"].size(0)
+        net = cls(N, M)
         net.load_state_dict(state_dict)
         return net
 
