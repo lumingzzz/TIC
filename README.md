@@ -51,9 +51,3 @@ If you find this work useful for your research, please cite:
 ```
 ## Contact
 If you have any question, please contact me via luming@smail.nju.edu.cn.
-
-## Related links
- * Kodak image dataset: http://r0k.us/graphics/kodak/
- * BPG image format by _Fabrice Bellard_: https://bellard.org/bpg
- * HEVC HM reference software: https://hevc.hhi.fraunhofer.de
- * VVC VTM reference software: https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM
