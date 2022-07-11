@@ -42,11 +42,15 @@ input of context model, it shows more feasible than the original one.
 If you find this work useful for your research, please cite:
 
 ```
-@article{lu2021transformer,
-	title={Transformer-based Image Compression},
-	author={Lu, Ming and Guo, Peiyao and Shi, Huiqing and Cao, Chuntong and Ma, Zhan},
-	journal={arXiv preprint arXiv:2111.06707},
-	year={2021}
+@INPROCEEDINGS{9810760,
+  author={Lu, Ming and Guo, Peiyao and Shi, Huiqing and Cao, Chuntong and Ma, Zhan},
+  booktitle={2022 Data Compression Conference (DCC)}, 
+  title={Transformer-based Image Compression}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={469-469},
+  doi={10.1109/DCC52660.2022.00080}}
 }
 ```
 ## Contact
