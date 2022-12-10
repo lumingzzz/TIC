@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from compressai.entropy_models import EntropyBottleneck
+from compressai.entropy_models import EntropyBottleneck, GaussianConditional
 from compressai.layers import RSTB, CausalAttentionModule
 from compressai.ans import BufferedRansEncoder, RansDecoder
 from timm.models.layers import trunc_normal_
@@ -188,7 +188,7 @@ class TIC(nn.Module):
         self.g_s6 = deconv(N, 3, kernel_size=5, stride=2)
 
         self.entropy_bottleneck = EntropyBottleneck(N)
-        # self.gaussian_conditional = GaussianConditional(None)
+        self.gaussian_conditional = GaussianConditional(None)
         self.context_prediction = CausalAttentionModule(M, M*2)   
 
         self.entropy_parameters = nn.Sequential(
