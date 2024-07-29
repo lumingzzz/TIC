@@ -32,7 +32,7 @@ class TIC(nn.Module):
     def __init__(self, N=128, M=192):
         super().__init__()
 
-        depths = [1, 2, 3, 1, 1]
+        depths = [2, 4, 6, 2, 2]
         num_heads = [4, 8, 16, 16, 16]
         window_size = 8
         mlp_ratio = 4.
